@@ -61,7 +61,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.android.material:material:1.9.0")
-    implementation("com.jakewharton.timber:timber:4.7.0")
     implementation("io.reactivex.rxjava2:rxjava:2.2.3")
     implementation("io.reactivex.rxjava2:rxkotlin:2.3.0")
     testImplementation("junit:junit:4.13.2")

@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">BAphone</string>
-    <string name="call_input_hint">Call…</string>
+    <string name="call_input_hint">NYI…</string>
+    <string name="url_hint">URL…</string>
+    <string name="car_id_hint">Car ID…</string>
+    <string name="username_hint">Username…</string>
+    <string name="password_hint">Password…</string>
     <string name="make_call">Make Call</string>
+    <string name="save_settings">Save settings</string>
     <string name="no_car_error">Error: Car with provided id not found</string>
     <string name="status_to_waiting">Changing car status STOPPEDBYPHONE to WAITING</string>
     <string name="status_to_stopped">Changing car status to STOPPEDBYPHONE</string>

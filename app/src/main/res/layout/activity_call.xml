@@ -29,7 +29,7 @@
             app:layout_constraintBaseline_toBaselineOf="@+id/hangup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/hangup"
-    />
+            android:enabled="false"/>
 
     <Button
             android:id="@+id/hangup"

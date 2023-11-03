@@ -27,15 +27,10 @@ class CallActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCallBinding
 
-    //TODO add url to settings
-    // 10.170.0.109 eth
-    // 10.170.0.110 wlan
-    private val url: String = "http://10.170.0.110:8011/graphql"
-    //TODO add car ID to settings
-    private val carId: Int = 3
-    //TODO add user/pass to settings
-    private val username: String  = "Brno"
-    private val password: String = "Admin1"
+    private lateinit var url: String
+    private var carId: Int = -1
+    private lateinit var username: String
+    private lateinit var password: String
 
     private var tenantId: Int = -1
 
@@ -43,7 +38,6 @@ class CallActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCallBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //might have unexpected behavior
         number = intent.data?.schemeSpecificPart?:""
 
         CookieHandler.setDefault(CookieManager(null, CookiePolicy.ACCEPT_ALL))
@@ -51,6 +45,12 @@ class CallActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)
+        url = sharedPreferences.getString("url", "").toString()
+        carId = sharedPreferences.getInt("carId", -1)
+        username = sharedPreferences.getString("username", "").toString()
+        password = sharedPreferences.getString("password", "").toString()
+
         updateCar()
 
         binding.answer.setOnClickListener {
@@ -59,6 +59,7 @@ class CallActivity : AppCompatActivity() {
 
         binding.hangup.setOnClickListener {
             OngoingCall.hangup()
+            finishAndRemoveTask()
         }
 
         OngoingCall.state
@@ -169,6 +170,7 @@ class CallActivity : AppCompatActivity() {
                 Handler(Looper.getMainLooper()).postDelayed(
                     {
                         OngoingCall.hangup()
+                        finishAndRemoveTask()
                     },
                     5000
                 )

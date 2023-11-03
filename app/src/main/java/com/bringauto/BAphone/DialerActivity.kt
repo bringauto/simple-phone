@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.telecom.TelecomManager
 import android.telecom.TelecomManager.ACTION_CHANGE_DEFAULT_DIALER
 import android.telecom.TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
@@ -28,10 +30,38 @@ class DialerActivity : AppCompatActivity() {
         super.onStart()
         offerReplacingDefaultDialer()
 
+        val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)
+        binding.urlInput.setText(sharedPreferences.getString("url", "").toString(), TextView.BufferType.EDITABLE)
+        binding.carIdInput.setText(sharedPreferences.getInt("carId", 0).toString(), TextView.BufferType.EDITABLE)
+        binding.usernameInput.setText(sharedPreferences.getString("username", "").toString(), TextView.BufferType.EDITABLE)
+        binding.passwordInput.setText(sharedPreferences.getString("password", "").toString(), TextView.BufferType.EDITABLE)
+
+        binding.button.setOnClickListener {
+            saveSettings()
+            saveToast()
+        }
+
         binding.phoneNumberInput.setOnEditorActionListener { _, _, _ ->
-            makeCall()
+            //makeCall()
             true
         }
+    }
+
+    private fun saveSettings() {
+        val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("url", binding.urlInput.text.toString())
+        editor.putInt("carId", binding.carIdInput.text.toString().toInt())
+        editor.putString("username", binding.usernameInput.text.toString())
+        editor.putString("password", binding.passwordInput.text.toString())
+        editor.apply()
+    }
+
+    private fun saveToast() {
+        val text = "Settings saved"
+        val duration = Toast.LENGTH_SHORT
+        val toast = Toast.makeText(this, text, duration)
+        toast.show()
     }
 
     private fun makeCall() {
@@ -48,7 +78,6 @@ class DialerActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        //not in original code
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION && PERMISSION_GRANTED in grantResults) {
             makeCall()
@@ -56,7 +85,6 @@ class DialerActivity : AppCompatActivity() {
     }
 
     private fun offerReplacingDefaultDialer() {
-        //TODO add internet permission
         if (getSystemService(TelecomManager::class.java).defaultDialerPackage != packageName) {
             Intent(ACTION_CHANGE_DEFAULT_DIALER)
                 .putExtra(EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME, packageName)

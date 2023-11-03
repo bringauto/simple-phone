@@ -31,6 +31,7 @@ class CallActivity : AppCompatActivity() {
     private var carId: Int = -1
     private lateinit var username: String
     private lateinit var password: String
+    private lateinit var allowedNumber: String
 
     private var tenantId: Int = -1
 
@@ -50,8 +51,12 @@ class CallActivity : AppCompatActivity() {
         carId = sharedPreferences.getInt("carId", -1)
         username = sharedPreferences.getString("username", "").toString()
         password = sharedPreferences.getString("password", "").toString()
+        allowedNumber = sharedPreferences.getString("number", "").toString()
 
-        updateCar()
+        if (allowedNumber == "" || allowedNumber == number)
+            updateCar()
+        else
+            binding.response.text = "Phone number not allowed"
 
         binding.answer.setOnClickListener {
             OngoingCall.answer()
@@ -75,6 +80,8 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun updateUi(state: Int) {
+        binding.callInfo.text = "${state.asString().lowercase().replaceFirstChar(Char::titlecase)}\n$number"
+
         binding.answer.isVisible = state == Call.STATE_RINGING
         binding.hangup.isVisible = state in listOf(
             Call.STATE_DIALING,
@@ -99,7 +106,7 @@ class CallActivity : AppCompatActivity() {
                 getCarsRequest()
             },
             { error ->
-                binding.callInfo.text = error.localizedMessage
+                binding.response.text = error.localizedMessage
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -138,11 +145,11 @@ class CallActivity : AppCompatActivity() {
                     }
 
                     if (i == cars.length() - 1)
-                        binding.callInfo.text = getString(R.string.no_car_error)
+                        binding.response.text = getString(R.string.no_car_error)
                 }
             },
             { error ->
-                binding.callInfo.text = error.localizedMessage
+                binding.response.text = error.localizedMessage
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -176,7 +183,7 @@ class CallActivity : AppCompatActivity() {
                 )
             },
             { error ->
-                binding.callInfo.text = error.localizedMessage
+                binding.response.text = error.localizedMessage
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -193,10 +200,10 @@ class CallActivity : AppCompatActivity() {
 
     private fun getNewCarStatus(oldStatus: String): String {
         if (oldStatus == "STOPPEDBYPHONE") {
-            binding.callInfo.text = getString(R.string.status_to_waiting)
+            binding.response.text = getString(R.string.status_to_waiting)
             return "WAITING"
         }
-        binding.callInfo.text = getString(R.string.status_to_stopped)
+        binding.response.text = getString(R.string.status_to_stopped)
         return "STOPPEDBYPHONE"
     }
 

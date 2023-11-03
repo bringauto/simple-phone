@@ -35,15 +35,11 @@ class DialerActivity : AppCompatActivity() {
         binding.carIdInput.setText(sharedPreferences.getInt("carId", 0).toString(), TextView.BufferType.EDITABLE)
         binding.usernameInput.setText(sharedPreferences.getString("username", "").toString(), TextView.BufferType.EDITABLE)
         binding.passwordInput.setText(sharedPreferences.getString("password", "").toString(), TextView.BufferType.EDITABLE)
+        binding.phoneNumberInput.setText(sharedPreferences.getString("number", "").toString(), TextView.BufferType.EDITABLE)
 
         binding.button.setOnClickListener {
             saveSettings()
             saveToast()
-        }
-
-        binding.phoneNumberInput.setOnEditorActionListener { _, _, _ ->
-            //makeCall()
-            true
         }
     }
 
@@ -54,6 +50,7 @@ class DialerActivity : AppCompatActivity() {
         editor.putInt("carId", binding.carIdInput.text.toString().toInt())
         editor.putString("username", binding.usernameInput.text.toString())
         editor.putString("password", binding.passwordInput.text.toString())
+        editor.putString("number", binding.phoneNumberInput.text.toString())
         editor.apply()
     }
 

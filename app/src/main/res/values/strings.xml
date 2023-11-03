@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">BAphone</string>
-    <string name="call_input_hint">NYI…</string>
+    <string name="call_input_hint">Allowed number…</string>
     <string name="url_hint">URL…</string>
     <string name="car_id_hint">Car ID…</string>
     <string name="username_hint">Username…</string>

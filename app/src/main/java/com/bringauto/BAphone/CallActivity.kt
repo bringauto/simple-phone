@@ -31,7 +31,7 @@ class CallActivity : AppCompatActivity() {
     private var carId: Int = -1
     private lateinit var username: String
     private lateinit var password: String
-    private lateinit var allowedNumber: String
+    private lateinit var allowedNumbers: List<String>
 
     private var tenantId: Int = -1
 
@@ -51,9 +51,9 @@ class CallActivity : AppCompatActivity() {
         carId = sharedPreferences.getInt("carId", -1)
         username = sharedPreferences.getString("username", "").toString()
         password = sharedPreferences.getString("password", "").toString()
-        allowedNumber = sharedPreferences.getString("number", "").toString()
+        allowedNumbers = sharedPreferences.getString("number", "").toString().split(",")
 
-        if (allowedNumber == "" || allowedNumber == number)
+        if (allowedNumbers.all { it == "" } || allowedNumbers.contains(number))
             updateCar()
         else
             binding.response.text = "Phone number not allowed"

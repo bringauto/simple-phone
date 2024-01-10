@@ -7,7 +7,8 @@ private const val carGetString = "query Q{\nCarQuery {\ncars {\nnodes {\nname\ni
     "status\nfuel\nhwId\ncompanyName\ncarAdminPhone\ncallTwiml\nunderTest\nspeed\nrouteId\n}\n}\n}\n}"
 
 private const val carUpdateString = "mutation UpdateCar{\nCarMutation {\nupdateCar(car: {\nid: %id%,\nname: " +
-    "\"%name%\",\nrequireNewToken: false,\nstatus: %status%,\nbutton: NORMAL,\nunderTest: %underTest%,\n}){\nid\n}\n}\n}"
+    "\"%name%\",\nrequireNewToken: false,\nstatus: %status%,\nbutton: NORMAL,\nunderTest: %underTest%," +
+    "\nrouteId: %routeId%,\n}){\nid\n}\n}\n}"
 
 fun getLoginString(username: String, password: String): String {
     var returnString = loginString
@@ -20,11 +21,12 @@ fun getCarGetString(): String {
     return carGetString
 }
 
-fun getCarUpdateString(carId: Int, carName: String, carStatus: String, carUnderTest: Boolean): String {
+fun getCarUpdateString(carId: Int, carName: String, carStatus: String, carUnderTest: Boolean, routeId: Int): String {
     var returnString = carUpdateString
     returnString = returnString.replace("%id%", carId.toString())
     returnString = returnString.replace("%name%", carName)
     returnString = returnString.replace("%status%", carStatus)
     returnString = returnString.replace("%underTest%", carUnderTest.toString())
+    returnString = returnString.replace("%routeId%", routeId.toString())
     return returnString
 }

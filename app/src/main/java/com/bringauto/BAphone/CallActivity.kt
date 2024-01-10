@@ -139,7 +139,8 @@ class CallActivity : AppCompatActivity() {
                         updateCarRequest(
                             carId, car.getString("name"),
                             getNewCarStatus(car.getString("status")),
-                            car.getBoolean("underTest")
+                            car.getBoolean("underTest"),
+                            car.getInt("routeId")
                         )
                         break
                     }
@@ -164,10 +165,10 @@ class CallActivity : AppCompatActivity() {
         volleyQueue.add(getCarRequest)
     }
 
-    private fun updateCarRequest(carId: Int, carName: String, carStatus: String, carUnderTest: Boolean) {
+    private fun updateCarRequest(carId: Int, carName: String, carStatus: String, carUnderTest: Boolean, routeId: Int) {
         val volleyQueue = Volley.newRequestQueue(this)
         val carUpdateMutation = JSONObject()
-        carUpdateMutation.put("query", getCarUpdateString(carId, carName, carStatus, carUnderTest))
+        carUpdateMutation.put("query", getCarUpdateString(carId, carName, carStatus, carUnderTest, routeId))
 
         val updateCarRequest = object: JsonObjectRequest(
             Method.POST,
